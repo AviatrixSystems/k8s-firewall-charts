@@ -1,0 +1,5 @@
+role:
+  name: avx-controller
+  subject:
+    kind: Group
+    name: avx-controller
