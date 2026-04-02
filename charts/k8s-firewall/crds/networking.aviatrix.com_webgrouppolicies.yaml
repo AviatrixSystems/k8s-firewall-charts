@@ -1,0 +1,127 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.18.0
+  name: webgrouppolicies.networking.aviatrix.com
+spec:
+  group: networking.aviatrix.com
+  names:
+    kind: WebgroupPolicy
+    listKind: WebgroupPolicyList
+    plural: webgrouppolicies
+    singular: webgrouppolicy
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: WebgroupPolicy is a specification for a WebgroupPolicy resource.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              allowedDomains:
+                description: AllowedDomains is a list of allowed domains for the web
+                  group policy.
+                items:
+                  type: string
+                type: array
+              decryptPolicy:
+                description: |-
+                  Decryption options for the rule.
+                  Supported values are:
+                  - "decryptAllowed": Decryption is allowed for the flow.
+                  - "decryptNotAllowed": Decryption is not allowed for the flow.
+                enum:
+                - decryptAllowed
+                - decryptNotAllowed
+                type: string
+              flowAppRequirement:
+                description: |-
+                  Flow application requirement for the policy.
+                  Supported values are:
+                  - "tlsRequired": TLS is required for the flow.
+                  - "tlsNotRequired": TLS is not required for the flow.
+                enum:
+                - tlsRequired
+                - tlsNotRequired
+                type: string
+              logProfile:
+                description: |-
+                  LogProfile specifies how sessions are logged.
+                  It can only be set if Logging is true.
+                  Common values are:
+                  - "start": Log at session start
+                  - "end": Log at session end
+                  - "start/end": Log at both session start and end
+                  If not set, the default log profile of the Aviatrix controller ("start") is used.
+                type: string
+              logging:
+                description: Logging indicates whether to log traffic that matches
+                  this rule.
+                type: boolean
+              selector:
+                description: Selector defines to what workloads this WebgroupPolicy
+                  applies.
+                properties:
+                  matchLabels:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  service:
+                    type: string
+                type: object
+                x-kubernetes-validations:
+                - message: service is forbidden when matchLabels is set
+                  rule: 'has(self.matchLabels) ?  (!has(self.service) || size(self.service)
+                    == 0) : true'
+                - message: matchLabels is forbidden when service is set
+                  rule: '(has(self.service) && size(self.service) > 0) ?  !has(self.matchLabels)
+                    : true'
+              tlsProfile:
+                description: TLSProfile specifies the name of the TLS profile to be
+                  used for the policy.
+                type: string
+              watch:
+                description: Whether to enable watch mode for the policy.
+                type: boolean
+            required:
+            - allowedDomains
+            type: object
+          status:
+            properties:
+              appDomainUuid:
+                type: string
+              lastReconciledGeneration:
+                format: int64
+                type: integer
+              policyUuid:
+                type: string
+              smartGroupUUID:
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
