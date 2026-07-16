@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["rbac", "role", "serviceAccount"],
+  "additionalProperties": false,
+  "properties": {
+    "rbac": {
+      "type": "object",
+      "description": "Controls creation of ClusterRole and ClusterRoleBinding resources.",
+      "required": ["create"],
+      "additionalProperties": false,
+      "properties": {
+        "create": {
+          "type": "boolean",
+          "description": "When set to false, the ClusterRole and ClusterRoleBinding will not be created.",
+          "default": true
+        },
+        "manageNetworkPolicies": {
+          "type": "boolean",
+          "description": "When set to true, grants the controller permission to manage NetworkPolicy resources (create, update, patch, delete). Required for network policy enforcement features.",
+          "default": false
+        }
+      }
+    },
+    "role": {
+      "type": "object",
+      "description": "Configuration for the ClusterRole and ClusterRoleBinding.",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the ClusterRole and ClusterRoleBinding.",
+          "default": "avx-controller"
+        },
+        "subject": {
+          "type": "object",
+          "description": "Subject to bind in the ClusterRoleBinding. If omitted, no subject is added (useful when only a ServiceAccount binding is needed).",
+          "required": ["kind", "name"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "description": "Kind of the subject (e.g. Group, User, ServiceAccount).",
+              "enum": ["Group", "User", "ServiceAccount"]
+            },
+            "name": {
+              "type": "string",
+              "description": "Name of the subject."
+            },
+            "namespace": {
+              "type": "string",
+              "description": "Namespace of the subject. Only applicable when kind is ServiceAccount."
+            }
+          }
+        }
+      }
+    },
+    "serviceAccount": {
+      "type": "object",
+      "description": "Controls creation of a ServiceAccount and its token Secret.",
+      "required": ["create", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "create": {
+          "type": "boolean",
+          "description": "When set to true, a ServiceAccount with a ServiceAccountToken is created and referenced by the ClusterRoleBinding.",
+          "default": false
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the ServiceAccount and the prefix for its token Secret.",
+          "default": "avx-controller"
+        }
+      }
+    }
+  }
+}
