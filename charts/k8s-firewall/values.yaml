@@ -1,0 +1,19 @@
+rbac:
+  # When set to false, the ClusterRoleBinding and ClusterRole will not be created.
+  create: true
+  # When set to true, grants the controller permission to manage NetworkPolicy
+  # resources (create, update, patch, delete). Required for network policy
+  # enforcement features.
+  manageNetworkPolicies: false
+
+role:
+  name: avx-controller
+  subject:
+    kind: Group
+    name: avx-controller
+
+serviceAccount:
+  # When set to true, a ServiceAccount with a ServiceAccountToken is created
+  # and referenced by the ClusterRoleBinding.
+  create: false
+  name: avx-controller
