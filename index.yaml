@@ -2,6 +2,14 @@ apiVersion: v1
 entries:
   k8s-firewall:
   - apiVersion: v2
+    created: "2026-07-16T09:21:30.474419802Z"
+    description: A Helm chart for Kubernetes Firewall
+    digest: 184dc1f5ebd90c396cd99632da6324e7e014082a15657623e4f9851172e852cc
+    name: k8s-firewall
+    urls:
+    - https://github.com/AviatrixSystems/k8s-firewall-charts/releases/download/k8s-firewall-10.0.0/k8s-firewall-10.0.0.tgz
+    version: 10.0.0
+  - apiVersion: v2
     created: "2026-04-08T08:00:32.306990715Z"
     description: A Helm chart for Kubernetes Firewall
     digest: 8d48cea36e77dbff84ddec89ca1ac3860eb93f046dcdb1a1107ef1b1a13c42bc
@@ -17,4 +25,4 @@ entries:
     urls:
     - https://github.com/AviatrixSystems/k8s-firewall-charts/releases/download/k8s-firewall-8.2.0/k8s-firewall-8.2.0.tgz
     version: 8.2.0
-generated: "2026-04-08T08:00:32.306998371Z"
+generated: "2026-07-16T09:21:30.474431524Z"
